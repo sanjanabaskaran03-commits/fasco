@@ -14,9 +14,11 @@ exports.postLogin = (req, res, next) => {
                 return res.redirect('/login');
             }
             req.session.isLoggedIn = true;
-            req.session.user = user;
+            // Store a lean user reference in the session to avoid serialization issues
+            req.session.user = { _id: user._id.toString() };
             
             return req.session.save(err => {
+                if(err) console.log(err)
                 res.redirect('/');
             });
         })
@@ -25,7 +27,9 @@ exports.postLogin = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
-    console.log(err);
-    res.redirect('/');
+    if (err) {
+        console.log(err);
+    }
+    res.redirect('/login');
   });
 };

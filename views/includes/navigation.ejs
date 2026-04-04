@@ -1,5 +1,19 @@
-<header>
-    <nav style="background: #004d40; display:flex; align-items: center; justify-content: space-between; padding: 20px;">
+<header style="width: 100%;">
+    <nav style="
+        background: #004d40; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        padding: 0 20px; /* Reduced vertical padding, keep horizontal */
+        height: 60px;    /* Fixed height is safer for navs */
+        position: sticky; 
+        top: 0; 
+        left: 0; 
+        z-index: 1000; 
+        width: 100%; 
+        box-sizing: border-box; /* IMPORTANT: prevents width overflow */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    ">
         <div style="display: flex; align-items: center; gap: 20px;">
             <a href="/" style="color:#fff; text-decoration:none;">Shop</a>
             <a href="/products" style="color:#fff; text-decoration:none;">Products</a>
@@ -15,7 +29,6 @@
         <div style="display: flex; align-items: center; gap: 20px;">
             <% if (!isAuthenticated) { %>
                 <a href="/login" style="color:#fff; text-decoration:none;">Login</a>
-                <a href="/signup" style="color:#fff; text-decoration:none;">Signup</a>
             <% } else { %>
                 <form action="/logout" method="POST" style="margin: 0;">
                     <button type="submit" style="background: none; border: none; color: #fff; cursor: pointer; font-family: inherit; font-size: inherit;">

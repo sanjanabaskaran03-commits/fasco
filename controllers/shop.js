@@ -45,6 +45,9 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
     req.user
         .populate('cart.items.productId')
         .then(user => {
@@ -59,6 +62,9 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
     const prodId = req.body.productId;
     Product.findById(prodId)
         .then(product => {
@@ -69,6 +75,9 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
     const prodId = req.body.productId;
     req.user.removeFromCart(prodId)
         .then(() => res.redirect('/cart'))
@@ -76,6 +85,9 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
     if (req.user.cart.items.length === 0) {
         return res.redirect('/cart');
     }
@@ -104,6 +116,9 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
     Order.find({ 'user.userId': req.user._id })
         .then(orders => {
             res.render('shop/orders', {
