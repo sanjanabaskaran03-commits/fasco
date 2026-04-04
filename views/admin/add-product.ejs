@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= pageTitle %></title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #f4f7f6;
+            color: #1e293b;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            min-height: calc(100vh - 60px);
+        }
+
+        .card {
+            background: white;
+            width: 450px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box; 
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #004d40;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #059669;
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <div class="card">
+            <h2><%= editing ? 'Update Product' : 'Add New Product' %></h2>
+
+            <form action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST">
+                <div class="form-control">
+                    <label for="title">Product Title</label>
+                    <input type="text" name="title" id="title" value="<%= editing ? product.title : '' %>" placeholder="Enter title...">
+                </div>
+
+                <div class="form-control">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="text" name="imageUrl" id="imageUrl" value="<%= editing ? product.imageUrl : '' %>" placeholder="Paste link here...">
+                </div>
+
+                <div class="form-control">
+                    <label for="price">Price ($)</label>
+                    <input type="number" name="price" id="price" step="0.01" value="<%= editing ? product.price : '' %>">
+                </div>
+
+                <div class="form-control">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" rows="4" placeholder="Tell us about the product..."><%= editing ? product.description : '' %></textarea>
+                </div>
+
+                <% if (editing) { %>
+                    <input type="hidden" value="<%= product._id %>" name="productId">
+                <% } %>
+
+                <button class="btn" type="submit">
+                    <%= editing ? 'Update Product' : 'Create Product' %>
+                </button>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --success-green: #10b981;
+            --bg-gray: #f1f5f9;
+            --text-dark: #1e293b;
+            --border-color: #cbd5e1;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+            padding-top: 20px;
+        }
+
+        main .form-title {
+            margin-bottom: 24px;
+            text-align: center;
+            color: var(--text-dark);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .form-card {
+            width: min(560px, 95%);
+            margin: 0 auto;
+            background: white;
+            padding: 40px 36px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-control {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.85rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            resize: vertical; 
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--success-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #059669;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+      <%- include('../includes/navigation.ejs') %>
+    <main>
+        <h2 class="form-title"><%= editing ? 'Update Product' : 'Add New Product' %></h2>
+        <div class="form-card">
+        
+        <form action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST">
+            
+            <div class="form-control">
+                <label for="title">Product Title</label>
+                <input type="text" name="title" id="title" value="<%= editing ? product.title : '' %>" placeholder="Enter title...">
+            </div>
+
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input type="text" name="imageUrl" id="imageUrl" value="<%= editing ? product.imageUrl : '' %>" placeholder="Paste link here...">
+            </div>
+
+            <div class="form-control">
+                <label for="price">Price ($)</label>
+                <input type="number" name="price" id="price" step="0.01" value="<%= editing ? product.price : '' %>">
+            </div>
+
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="4" placeholder="Tell us about the product..."><%= editing ? product.description : '' %></textarea>
+            </div>
+
+            <% if (editing) { %>
+                <input type="hidden" value="<%= product._id %>" name="productId">
+            <% } %>
+
+            <button class="btn-submit" type="submit">
+                <%= editing ? 'Save Changes' : 'Create Product' %>
+            </button>
+            
+        </form>
+        </div>
+    </main>
+</body>
+</html>
