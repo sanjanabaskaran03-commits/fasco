@@ -1,5 +1,13 @@
 const Product = require('../models/product');
 
+exports.getAddProduct = (req, res, next) => {
+ res.render('admin/edit-product', {
+        pageTitle: 'Add Product',
+        path: '/admin/add-product',
+        editing: false,
+        isAuthenticated:req.session.isLoggedIn
+    });
+};
 exports.postAddProduct = (req, res, next) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
@@ -37,13 +45,7 @@ exports.postEditProduct = (req, res, next) => {
     })
     .catch(err => console.log(err));
 };
-exports.getAddProduct = (req, res, next) => {
-    res.render('admin/edit-product', {
-        pageTitle: 'Add Product',
-        path: '/admin/add-product',
-        editing: false
-    });
-};
+
 exports.getProducts=(req,res,next)=>{
     Product.find()
     .then(products=>{

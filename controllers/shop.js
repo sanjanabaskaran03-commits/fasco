@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Product = require('../models/product');
-const Order = require('../models/order'); // - Make sure you have the Order model created
+const Order = require('../models/order');
 
 exports.getIndex = (req, res, next) => {
     Product.find()
@@ -8,7 +8,8 @@ exports.getIndex = (req, res, next) => {
             res.render('shop/product_list', { 
                 prods: products,
                 pageTitle: 'All Products',
-                path: '/'
+                path: '/',
+                
             });
         })
         .catch(err => console.log(err));
@@ -99,8 +100,8 @@ exports.postOrder = (req, res, next) => {
             });
             const order = new Order({
                 user: {
-                    name: req.user.name,
-                    userId: req.user
+                    name: req.user.email,
+                    userId: req.user._id
                 },
                 products: products
             });

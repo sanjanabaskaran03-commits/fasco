@@ -116,6 +116,7 @@
         <div class="form-card">
         
         <form action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             
             <div class="form-control">
                 <label for="title">Product Title</label>

@@ -31,14 +31,16 @@
                     <div class="cart-item">
                         <span><strong><%= p.productId.title %></strong> (x<%= p.quantity %>)</span>
                         <form action="/cart-delete-item" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <input type="hidden" name="productId" value="<%= p.productId._id %>">
                             <button type="submit" class="btn-delete">Remove</button>
                         </form>
                     </div>
                 <% }) %>
                 <form action="/create-order" method="POST" onsubmit="this.querySelector('button').disabled = true;">
-    <button class="btn" type="submit">Order Now!</button>
-</form>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn" type="submit">Order Now!</button>
+                </form>
             <% } else { %>
                 <p style="text-align: center;">Your cart is empty!</p>
             <% } %>

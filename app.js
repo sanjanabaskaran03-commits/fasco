@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const csrf=require('csurf')
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -26,7 +27,7 @@ const store = new MongoDBStore({
     uri: process.env.MONGODB_URI,
     collection: 'sessions'
 });
-
+const csrfProtection=csrf()
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -40,13 +41,13 @@ app.use(
         saveUninitialized: false,    
         store: store,
         cookie: { 
-            maxAge: 60000, 
+            maxAge: 1000*60*60, 
             httpOnly: true,     
             secure: false        
         }                  
     })
 );
-
+app.use(csrfProtection)
 app.use((req, res, next) => {
     if (!req.session || !req.session.user) {
         return next();
@@ -67,6 +68,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
     next();
 });
 

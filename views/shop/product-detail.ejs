@@ -129,6 +129,7 @@
                     </p>
 
                     <form action="/cart" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button class="add-to-cart-btn" type="submit">Add to Cart</button>
                         <input type="hidden" name="productId" value="<%= product._id %>">
                     </form>
