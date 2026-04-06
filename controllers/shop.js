@@ -15,7 +15,7 @@ exports.getIndex = (req, res, next) => {
         .catch(err => console.log(err));
 };
 
-exports.getProducts = (req, res, next) => { // Adding this common route
+exports.getProducts = (req, res, next) => {
     Product.find()
         .then(products => {
             res.render('shop/product_list', {
@@ -100,7 +100,7 @@ exports.postOrder = (req, res, next) => {
             });
             const order = new Order({
                 user: {
-                    name: req.user.email,
+                    email: req.user.email,
                     userId: req.user._id
                 },
                 products: products
