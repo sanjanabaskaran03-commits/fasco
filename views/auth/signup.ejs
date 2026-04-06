@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #f4f7f6; }
+        main { display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
+        .card { 
+            background: white; width: 350px; padding: 30px; 
+            border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        }
+        input { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 12px; background: #004d40; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <div class="card">
+            <h2 style="text-align: center;">Sign Up</h2>
+            <form action="/signup" method="POST">
+    <div class="form-control">
+        <label for="email">E-Mail</label>
+        <input type="email" name="email" id="email">
+    </div>
+    <div class="form-control">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+    </div>
+    <div class="form-control">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" name="confirmPassword" id="confirmPassword">
+    </div>
+    <button class="btn" type="submit">Sign Up</button>
+</form>
+        </div>
+    </main>
+</body>
+</html>

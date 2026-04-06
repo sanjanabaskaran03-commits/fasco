@@ -1,9 +1,17 @@
+const user = require('../models/user');
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login'
+    });
+};
+exports.getSignup = (req, res, next) => {
+    res.render('auth/signup', {
+        path: '/signup',
+        pageTitle: 'Sign Up',
+        isAuthenticated: false  
     });
 };
 
@@ -14,7 +22,6 @@ exports.postLogin = (req, res, next) => {
                 return res.redirect('/login');
             }
             req.session.isLoggedIn = true;
-            // Store a lean user reference in the session to avoid serialization issues
             req.session.user = { _id: user._id.toString() };
             
             return req.session.save(err => {
@@ -24,6 +31,24 @@ exports.postLogin = (req, res, next) => {
         })
         .catch(err => console.log(err));
 };
+exports.postSignup = (req, res, next) => {
+    const { email, password, confirmPassword } = req.body;
+    user.findOne({email:email})
+        .then(userDoc=>{
+            if(userDoc){
+                return res.redirect('/signup');
+            }
+            const user = new User({
+                email:email,
+                password:password,
+                cart:{items:[]}
+            });
+            return user.save();
+        })
+        .then(result=>{
+            res.redirect('/login');
+        })
+}
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {

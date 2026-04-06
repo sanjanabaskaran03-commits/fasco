@@ -5,15 +5,13 @@ exports.postAddProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-
     const product = new Product({
         title: title,
         price: price,
-        description: description,
+        description:description,
         imageUrl: imageUrl,
-        userId: req.user 
+        userId:req.user
     });
-
     product
         .save()
         .then(result => {
@@ -26,7 +24,6 @@ exports.postAddProduct = (req, res, next) => {
 };
 exports.postEditProduct = (req, res, next) => {
   const { productId, title, price, description, imageUrl } = req.body;
-
   Product.findById(productId)
   .then(product=>{
     product.title=title; 
@@ -57,16 +54,15 @@ exports.getProducts=(req,res,next)=>{
         })
     })
     .catch(err=>{
-        console.Consolelog(err)
+        console.log(err)
     })
-}
+};
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-
   Product.findById(prodId)
     .then(product => {
       if (!product) {

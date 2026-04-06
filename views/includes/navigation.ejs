@@ -29,6 +29,7 @@
         <div style="display: flex; align-items: center; gap: 20px;">
             <% if (!isAuthenticated) { %>
                 <a href="/login" style="color:#fff; text-decoration:none;">Login</a>
+                <a href="/signup" style="color:#fff; text-decoration:none;">Sign Up</a>
             <% } else { %>
                 <form action="/logout" method="POST" style="margin: 0;">
                     <button type="submit" style="background: none; border: none; color: #fff; cursor: pointer; font-family: inherit; font-size: inherit;">
