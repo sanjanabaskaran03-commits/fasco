@@ -7,7 +7,19 @@ const router = express.Router();
 
 router.get('/login', authController.getLogin);
 router.get('/signup',authController.getSignup);
-router.post('/login', authController.postLogin);
+router.post(
+    '/login',
+    [
+        body('email')
+            .isEmail()
+            .withMessage('Please enter a valid email address.')
+            .normalizeEmail(),
+        body('password', 'Password cannot be empty.')
+            .notEmpty()
+            .trim()
+    ],
+    authController.postLogin
+);
 router.post('/signup',[check('email').isEmail().withMessage('Please enter a valid email')
 .custom((value,{req})=>{
         // if(value==='test@test.com'){

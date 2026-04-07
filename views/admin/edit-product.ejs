@@ -106,6 +106,23 @@
         .btn-submit:active {
             transform: scale(0.98);
         }
+        .form-control input.invalid,
+        .form-control textarea.invalid{
+            border-color: red;
+        }
+        .user-message{
+            margin: auto;
+            width: 98%;
+            border: 1px solid #4771fa;
+            padding: 1px;
+            border-radius: 3px;
+            background: b9c9ff;
+            text-align: center;
+        }
+        .user-message-error{
+            border-color: red;
+            background: rgb(255,176,176);
+        }
     </style>
 </head>
 
@@ -115,27 +132,33 @@
         <h2 class="form-title"><%= editing ? 'Update Product' : 'Add New Product' %></h2>
         <div class="form-card">
         
+             <% if (errorMessage) { %>
+                    <div class="user-message user-message-error">
+                        <%= errorMessage %>
+                    </div>
+                    <% } %>
+
         <form action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             
             <div class="form-control">
                 <label for="title">Product Title</label>
-                <input type="text" name="title" id="title" value="<%= editing ? product.title : '' %>" placeholder="Enter title...">
+                <input  class="<%= validationErrors.find(e =>e.param==='title')?'invalid':''%>" type="text" name="title" id="title" value="<%= editing || hasError ? product.title : '' %>" placeholder="Enter title...">
             </div>
 
             <div class="form-control">
                 <label for="imageUrl">Image URL</label>
-                <input type="text" name="imageUrl" id="imageUrl" value="<%= editing ? product.imageUrl : '' %>" placeholder="Paste link here...">
+                <input  class="<%= validationErrors.find(e =>e.param==='imageUrl')?'invalid':''%>" type="text" name="imageUrl" id="imageUrl" value="<%= editing || hasError? product.imageUrl : '' %>" placeholder="Paste link here...">
             </div>
 
             <div class="form-control">
                 <label for="price">Price ($)</label>
-                <input type="number" name="price" id="price" step="0.01" value="<%= editing ? product.price : '' %>">
+                <input  class="<%= validationErrors.find(e =>e.param==='price')?'invalid':''%>" type="number" name="price" id="price" step="0.01" value="<%= editing || hasError  ? product.price : '' %>">
             </div>
 
             <div class="form-control">
                 <label for="description">Description</label>
-                <textarea name="description" id="description" rows="4" placeholder="Tell us about the product..."><%= editing ? product.description : '' %></textarea>
+                <textarea  class="<%= validationErrors.find(e =>e.param==='description')?'invalid':''%>" name="description" id="description" rows="4" placeholder="Tell us about the product..."><%= editing || hasError  ? product.description : '' %></textarea>
             </div>
 
             <% if (editing) { %>
