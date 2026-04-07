@@ -28,6 +28,9 @@ const store = new MongoDBStore({
     uri: process.env.MONGODB_URI,
     collection: 'sessions'
 });
+store.on('error', err => {
+    console.log('Session store error:', err);
+});
 const csrfProtection=csrf()
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -44,12 +47,14 @@ app.use(
         cookie: { 
             maxAge: 1000*60*60, 
             httpOnly: true,     
-            secure: false        
+            secure: false,
+            sameSite: 'lax'
         }                  
     })
 );
-app.use(csrfProtection)
 app.use(flash())
+app.use(csrfProtection)
+
 app.use((req, res, next) => {
     if (!req.session || !req.session.user) {
         return next();
@@ -77,6 +82,15 @@ app.use((req, res, next) => {
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
+
+app.use((err, req, res, next) => {
+    if (err && err.code === 'EBADCSRFTOKEN') {
+        req.flash('error', 'Your session expired or the form is invalid. Please try again.');
+        const fallback = req.get('Referer') || '/login';
+        return res.redirect(fallback);
+    }
+    next(err);
+});
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(result => {
